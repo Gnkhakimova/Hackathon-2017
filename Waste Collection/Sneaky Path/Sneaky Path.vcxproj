@@ -151,18 +151,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Input1.txt" />
-    <Text Include="N10b.txt" />
     <Text Include="N10c.txt" />
-    <Text Include="N10d.txt" />
-    <Text Include="N15a.txt" />
-    <Text Include="N15b.txt" />
-    <Text Include="N20a.txt" />
-    <Text Include="N25a.txt" />
-    <Text Include="N30.txt" />
-    <Text Include="N35.txt" />
-    <Text Include="N50.txt" />
-    <Text Include="N75.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

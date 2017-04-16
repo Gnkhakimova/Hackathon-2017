@@ -15,40 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Input1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N10b.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="N10c.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N10d.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N15a.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N15b.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N20a.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N25a.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N30.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N35.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N50.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="N75.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

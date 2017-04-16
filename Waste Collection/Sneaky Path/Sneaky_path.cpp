@@ -90,9 +90,10 @@ void printpath(int **parent, int u, int v, vector<int>** actual_path, int i, int
 /// need
 /*FloydWarshall algorithm is used to calculate the shorest path from each city to each city
 in order to calculate actual car flow on each edge*/
-void floydwarshall(int **graph,int dimension, vector<int>** actual_path,int **flow, int start, int end, ofstream& outfile, int *waste)
+
+void floydwarshall(int **graph, int dimension, vector<int>** actual_path, int **flow, int start, int end, ofstream& outfile, int *waste)
 {
-	
+
 	int** distance = new int*[dimension];
 	for (int i = 1; i <= dimension; i++)
 	{
@@ -105,8 +106,8 @@ void floydwarshall(int **graph,int dimension, vector<int>** actual_path,int **fl
 	{
 		parent[i] = new int[dimension];
 	}
-	for (i = 1; i<=dimension; i++)
-		for (j = 1; j<=dimension; j++)
+	for (i = 1; i <= dimension; i++)
+		for (j = 1; j <= dimension; j++)
 		{
 			distance[i][j] = graph[i][j];
 			if (i == j)
@@ -117,48 +118,48 @@ void floydwarshall(int **graph,int dimension, vector<int>** actual_path,int **fl
 				parent[i][j] = INF;
 		}
 
-	
-// Floyd Warshall algorithm, pick the minimum of two and update the parent node.
-	for (k = 1; k<=dimension; k++)
+
+	// Floyd Warshall algorithm, pick the minimum of two and update the parent node.
+	for (k = 1; k <= dimension; k++)
 	{
-		for (i = 1; i<=dimension; i++)
+		for (i = 1; i <= dimension; i++)
 		{
-			for (j = 1; j<=dimension; j++)
-			{				
-					if ((distance[i][k] + distance[k][j] < distance[i][j]))
-					{
-						distance[i][j] = distance[i][k] + distance[k][j];
-						parent[i][j] = parent[k][j];
-					}				
+			for (j = 1; j <= dimension; j++)
+			{
+				if ((distance[i][k] + distance[k][j] < distance[i][j]))
+				{
+					distance[i][j] = distance[i][k] + distance[k][j];
+					parent[i][j] = parent[k][j];
+				}
 			}
 		}
 	}
 
-	
+
 	/*Function which will calculate actual shotest path from each city to each city*/
 	print_shortest_distance(distance, dimension, outfile);
 
-	outfile << "\n\n";	
-	for (i = 1; i<=dimension; i++)
-		for (j = 1; j<=dimension; j++)
-		{					
-			if (parent[i][j] != INF && i != j)				
-			{				
-				actual_path[i][j].push_back(j); 
-				printpath(parent, i, j, actual_path,i,j,outfile);				
+	outfile << "\n\n";
+	for (i = 1; i <= dimension; i++)
+		for (j = 1; j <= dimension; j++)
+		{
+			if (parent[i][j] != INF && i != j)
+			{
+				actual_path[i][j].push_back(j);
+				printpath(parent, i, j, actual_path, i, j, outfile);
 			}
-				else
-				{
-					actual_path[i][j].push_back(i);				
-				}
+			else
+			{
+				actual_path[i][j].push_back(i);
+			}
 		}
 	// Output actual shortest path from each node to each node stored in 2D matrix of vectors
-	outfile << "\n"<<"----------Actual shortest path--------- " << endl;
+	outfile << "\n" << "----------Actual shortest path--------- " << endl;
 	for (int k = 1; k <= dimension; k++)
 	{
 		for (int j = 1; j <= dimension; j++)
 		{
-			outfile << "   "<<"(";
+			outfile << "   " << "(";
 			for (vector<int>::const_iterator i = actual_path[k][j].begin(); i != actual_path[k][j].end(); ++i)
 			{
 				outfile << *i << " ";
@@ -167,29 +168,53 @@ void floydwarshall(int **graph,int dimension, vector<int>** actual_path,int **fl
 		}
 		outfile << endl;
 	}
-	
 
-	outfile << "path to collect the waste" << endl;
+	outfile << endl << endl;
+	outfile << "----------------Optimal path to collect waste--------------------" << endl;
+	outfile << "Start -> ";
 	int source = start;
-	int dest = end;
+	vector<int> store;
 	for (int p = 0; p < 10; p++)
 	{
 		if (waste[p] == 1)
-			{
-				for (vector<int>::const_iterator i = actual_path[p+1][source].begin(); i != actual_path[p+1][source].end(); ++i)
-				{
-					outfile << *i << " ";
-				}
-				source = p+1;
-				
-			}
+
+		{
+			store.push_back(p + 1);
 		}
+	}
+
+	for (int g = 0; g < store.size(); g++)
+	{
+		if (store[g] != -1)
+		{
+			for (vector<int>::const_iterator i = actual_path[store[g]][source].begin(); i != actual_path[store[g]][source].end(); ++i)
+			{
+				outfile << *i << " ";
+				for (int j = 0; j < store.size(); j++)
+				{
+					if (*i == store[j] && *i != store[g])
+					{
+						store[j] = -1; // position
+					}
+				}
+			}
+			source = store[g];
+			outfile << " -> ";
+		}
+		else
+		{			
+				continue;			
+		}
+	}
+	outfile << "Finsih" << endl;;
+			}
+		
 
 	//car_flows(flow,actual_path,dimension,start,end,outfile,graph);	
 
 	
 	
-}
+
 
 
 int main()
@@ -202,47 +227,15 @@ int main()
 	char comma;
 	int loc1, loc2, value = 0;
 	string junk;
-	//vector<int> full_waste;
-	int full_waste[10] = {1,0,0,1,1,0,1,1,0,1};
+	int full_waste[10] = {1,1,1,1,1,1,1,1,1,1};
 
 	/*open input file modify as needed, uncomment for testing*/
 	
-	/*ifstream infile("Input1.txt");
-	ofstream outfile("output1.txt");*/
-
+	
 	ifstream infile("N10c.txt");
 	ofstream outfile("outputN10c.txt");
 
-	/*ifstream infile("N10b.txt");
-	ofstream outfile("outputN10b.txt");*/
-
-	/*ifstream infile("N10d.txt");
-	ofstream outfile("outputN10d.txt");*/
-
-	/*ifstream infile("N15a.txt");
-	ofstream outfile("outputN15a.txt");*/
-
-	/*ifstream infile("N15b.txt");
-	ofstream outfile("outputN15b.txt");*/
-
-	/*ifstream infile("N20a.txt");
-	ofstream outfile("outputN20a.txt");*/
-
-	/*ifstream infile("N25a.txt");
-	ofstream outfile("outputN25a.txt");*/
-
-	/*ifstream infile("N30.txt");
-	ofstream outfile("outputN30.txt");*/
-
-	/*ifstream infile("N35.txt");
-	ofstream outfile("outputN35.txt");*/
-
-	/*ifstream infile("N50.txt");
-	ofstream outfile("outputN50.txt");*/
-
-	/*ifstream infile("N75.txt");
-	ofstream outfile("outputN75.txt");*/	
-
+	
 	/*if input file can't be opened output "File not found"*/
 	if (!infile.is_open())
 	{
@@ -257,24 +250,7 @@ int main()
 		return -1;
 	}
 
-
-
-
-	//modify
-	/*int city1;
-	for (int k = 0; k <= 10; k++)
-	{
-		infile >> city;
-		full_waste[k]=city;
-	}
-
-	for (int i = 0; i <= 10; i++)
-	{
-		cout << full_waste[i] << ", ";
-	}
 	
-*/
-
 	/*Reading in dimenstion, starting point and ending point*/
 
 	infile >> dimensions >> comma >> start >> comma >> end;
