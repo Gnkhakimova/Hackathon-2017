@@ -9,4 +9,9 @@ This application provides
 3. Reduce equipment wear and emissions and  
 4. Provide better customer service.   
 
+### Source code
+https://github.com/gt784/Hackathon-2017/tree/master/Source/Waste%20Collection/Project
+### Video
+https://www.youtube.com/watch?v=QZD3vvFYbqc&feature=youtu.be
+
 
